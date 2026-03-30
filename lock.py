@@ -4,6 +4,7 @@ from Crypto.Hash import MD5
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 ENCODING = "utf-8"
+SALT = "fe3&cc8da@tvb_vs"
 
 def read_bin_file(file_path: str) -> bytes:
     with open(file_path, 'rb') as file:
@@ -28,8 +29,8 @@ def zip_folder(folder_path: str, output_path: str):
 
 
 def main():
-    keyword = getpass.getpass(prompt="Please Input Key>").encode(encoding=ENCODING)
-    key = MD5.new(keyword).digest()
+    keyword = getpass.getpass(prompt="Please Input Key>") + SALT
+    key = MD5.new(keyword.encode(encoding=ENCODING)).digest()
     global CIPHER
     CIPHER = AES.new(key, AES.MODE_EAX)
 

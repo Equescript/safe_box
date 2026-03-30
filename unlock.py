@@ -4,6 +4,7 @@ from Crypto.Hash import MD5
 
 DIR = os.path.dirname(os.path.abspath(__file__))
 ENCODING = "utf-8"
+SALT = "fe3&cc8da@tvb_vs"
 
 def read_bin_file(file_path: str) -> bytes:
     with open(file_path, 'rb') as file:
@@ -24,8 +25,8 @@ def unzip_folder(zipfile_path, output_path):
         zipf.extractall(output_path)
 
 def main():
-    keyword = getpass.getpass(prompt="Please Input Key>").encode(encoding=ENCODING)
-    key = MD5.new(keyword).digest()
+    keyword = getpass.getpass(prompt="Please Input Key>") + SALT
+    key = MD5.new(keyword.encode(encoding=ENCODING)).digest()
     nonce_str = getpass.getpass(prompt="Please Input Number Used Once>")
     nonce_str.replace(" ", "")
     nonce = bytes.fromhex(nonce_str[2:] if nonce_str[0:2]=="0x" else nonce_str)
